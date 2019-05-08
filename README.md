@@ -1,3 +1,3 @@
-[![Build Status](https://dev.azure.com/visualsanity/BattleshipMicroservice/_apis/build/status/VisualSanity.Battleship.Microservice?branchName=master)](https://dev.azure.com/visualsanity/BattleshipMicroservice/_build/latest?definitionId=9&branchName=master)
+[![Build Status](https://dev.azure.com/visualsanity/Batttleship.Monolith/_apis/build/status/VisualSanity.Battleship.Monolith?branchName=master)](https://dev.azure.com/visualsanity/Batttleship.Monolith/_build/latest?definitionId=11&branchName=master)
 
-For more information about this project, click here to read the medium article.
+This blog for this application will be posted on the medium website when completed.
