@@ -7,11 +7,10 @@
     using Battleship.Core.Components.Player;
     using Battleship.Core.Models;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Caching.Memory;
     using Newtonsoft.Json;
 
     /// <summary>
-    ///     The game board generation
+    ///   The game board generation
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
@@ -84,7 +83,6 @@
             }
         }
 
-
         private IEnumerable<string> GetXAxis()
         {
             try
@@ -96,7 +94,6 @@
                 return null;
             }
         }
-
 
         private IEnumerable<int> GetYAxis()
         {
@@ -112,7 +109,7 @@
 
         private bool CheckPlayerStatus(string token)
         {
-            // return gamePlayer.IsPlayerValid(this.HttpContext.Request.Headers["Authorization"]);
+            //return gamePlayer.IsPlayerValid(this.HttpContext.Request.Headers["Authorization"]);
             return true;
         }
     }
