@@ -18,7 +18,7 @@ export class BattleshipService {
   public gamingGridNewGameSubject = new Subject<any>();
   public playerSubject = new Subject<Player>();
 
-  private host: string = "http://localhost:5000";
+  private host: string = "http://localhost";
   private battleshipUrl: string = this.host + "/api/Battleship/";
 
   constructor(private httpClient: HttpClient) {
