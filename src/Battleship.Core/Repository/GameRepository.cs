@@ -14,7 +14,7 @@ namespace Battleship.Core.Repository
     {
         private static volatile GameRepository instance;
 
-        private SqliteConnection databaseConnection = new SqliteConnection("Filename=Battleship.db");
+        private SqliteConnection databaseConnection = new SqliteConnection("Filename=../Data/Battleship.db");
 
 
         public static GameRepository Instance()
