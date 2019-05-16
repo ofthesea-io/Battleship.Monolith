@@ -15,8 +15,6 @@ strategy:
       node_version: 8.x
     node_9_x:
       node_version: 9.x
-  
-
 
 variables:
   buildConfiguration: 'Release'
@@ -34,14 +32,7 @@ steps:
     command: 'restore'
     projects: '**/*.csproj'
   displayName: Restore
-
-steps:
-- task: NodeTool@0 
-  inputs:
-    versionSpec: $(node_version)
-
-- script: npm install
-
+  
 #Build
 - task: DotNetCoreCLI@2
   inputs:
