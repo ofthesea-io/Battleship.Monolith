@@ -17,13 +17,12 @@
     [TestFixture]
     public class SegmentationTests : ComponentBase
     {
-        private readonly IShipRandomiser shipRandomiser;
+
 
         private readonly ISegmentation segmentation;
 
         public SegmentationTests()
         {
-            shipRandomiser = ShipRandomiser.Instance();
             segmentation = Segmentation.Instance();
         }
 
@@ -35,7 +34,7 @@
             int y = GridDimension + Index;
             Coordinate coordinate = new Coordinate(x, y);
             Segment segment = new Segment(Water);
-
+             
             // Act and Assert
             try
             {

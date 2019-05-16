@@ -38,8 +38,7 @@ namespace Battleship.Core.Tests
         {
             // Arrange
             IShip ship = new BattleShip(0);
-            var ships = new List<IShip>();
-            ships.Add(ship);
+            var ships = new List<IShip> {ship};
             var occupiedSegments = shipRandomiser.GetRandomisedShipCoordinates(ships).Count;
 
             // Act

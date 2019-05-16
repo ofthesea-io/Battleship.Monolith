@@ -21,7 +21,7 @@ namespace Battleship.Core.Components.Player
         private readonly IGameRepository gameRepository;
         private readonly ISegmentation segmentation;
 
-        JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings
+        readonly JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings
         {
             TypeNameHandling = TypeNameHandling.All,
             DefaultValueHandling = DefaultValueHandling.Ignore

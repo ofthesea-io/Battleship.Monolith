@@ -165,8 +165,6 @@ namespace Battleship.Core.Tests
         public void IsSegmentWithInGridRange_WhenXAxisIsGreaterThanDimension_ReturnFalse()
         {
             // Arrange
-            IShip firstDestroyer = new Destroyer(1);
-
             int x = XInitialPoint + GridDimension + Index;
             int y = Index;
 

@@ -41,7 +41,7 @@ namespace Battleship.Core.Repository
 
             if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(surname) ||  string.IsNullOrEmpty(serialisedShips))
             {
-                throw new ArgumentException();
+                throw new ArgumentException(authorisation);
             }
 
             using (databaseConnection)  
