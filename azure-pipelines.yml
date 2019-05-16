@@ -22,11 +22,12 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: |
-    npm install -g @angular/cli
-    npm install
-    ng build --prod
-
+- task: Npm@1
+  displayName: 'npm install'
+  inputs:
+    command: install
+    workingDir: src/angular7d
+    
 #Restore
 - task: DotNetCoreCLI@2
   inputs:
