@@ -9,16 +9,37 @@ trigger:
 pool:
   vmImage: 'Ubuntu-16.04'
 
+strategy:
+  matrix:
+    node_8_x:
+      node_version: 8.x
+    node_9_x:
+      node_version: 9.x
+  
+
+
 variables:
   buildConfiguration: 'Release'
 
 steps:
+- script: |
+    npm install -g @angular/cli
+    npm install
+    ng build --prod
+
 #Restore
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
     projects: '**/*.csproj'
   displayName: Restore
+
+steps:
+- task: NodeTool@0 
+  inputs:
+    versionSpec: $(node_version)
+
+- script: npm install
 
 #Build
 - task: DotNetCoreCLI@2
