@@ -26,8 +26,8 @@ steps:
   displayName: 'npm install'
   inputs:
     command: install
-    workingDir: src/angular7d
-    
+    workingDir: src/Battleship
+
 #Restore
 - task: DotNetCoreCLI@2
   inputs:
