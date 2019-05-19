@@ -1,17 +1,15 @@
 ﻿namespace Battleship.Core.Components.Board
 {
-
     /// <summary>
-    /// The gaming board for battle ships
+    ///     The gaming board for battle ships
     /// </summary>
     public interface IGridGenerator
     {
-         int[] GetNumericRows();
+        int? NumberOfSegments { get; set; }
 
-         string[] GetAlphaColumnChars();
+        int? NumberOfOccupiedSegments { get; set; }
+        int[] GetNumericRows();
 
-         int? NumberOfSegments { get; set; }
-
-         int? NumberOfOccupiedSegments { get; set; }
+        string[] GetAlphaColumnChars();
     }
 }

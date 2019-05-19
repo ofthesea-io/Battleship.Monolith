@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Battleship.Core.Models
+﻿namespace Battleship.Core.Models
 {
+    using System;
+
     public class Player
     {
         public string Firstname { get; set; }

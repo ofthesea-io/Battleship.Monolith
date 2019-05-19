@@ -10,7 +10,7 @@
     using Newtonsoft.Json;
 
     /// <summary>
-    ///   The game board generation
+    ///     The game board generation
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
@@ -54,7 +54,8 @@
         {
             try
             {
-                string session = await this.gamePlayer.CreatePlayer(player.Firstname, player.Lastname, player.NumberOfShips);
+                string session =
+                    await this.gamePlayer.CreatePlayer(player.Firstname, player.Lastname, player.NumberOfShips);
                 if (string.IsNullOrEmpty(session)) return this.BadRequest(false);
 
                 string token = JsonConvert.SerializeObject(new {token = session});

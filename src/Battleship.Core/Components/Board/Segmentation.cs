@@ -11,11 +11,11 @@
     {
         private static volatile Segmentation instance;
 
-        private readonly SortedDictionary<Coordinate, Segment> segmentations;
+        private readonly SortedDictionary<Coordinate, Segment> segmentation;
 
         protected Segmentation()
         {
-            segmentations = new SortedDictionary<Coordinate, Segment>(new CoordinateComparer());
+            this.segmentation = new SortedDictionary<Coordinate, Segment>(new CoordinateComparer());
         }
 
         public static Segmentation Instance()
@@ -44,7 +44,7 @@
             }
 
 
-            segmentations.Add(coordinate, new Segment(segment.Character));
+            this.segmentation.Add(coordinate, new Segment(segment.Character));
         }
 
         public void UpdateSegment(Coordinate coordinate, Segment segment)
@@ -54,7 +54,7 @@
                 throw new IndexOutOfRangeException();
             }
          
-            Segment item = segmentations.FirstOrDefault(q => q.Key.X == coordinate.X && q.Key.Y == coordinate.Y).Value;
+            Segment item = this.segmentation.FirstOrDefault(q => q.Key.X == coordinate.X && q.Key.Y == coordinate.Y).Value;
 
             if (item != null)
             {
@@ -78,7 +78,7 @@
                     throw new IndexOutOfRangeException();
                 }
 
-                Segment item = segmentations.FirstOrDefault(q => q.Key.X == segment.Key.X && q.Key.Y == segment.Key.Y).Value;
+                Segment item = this.segmentation.FirstOrDefault(q => q.Key.X == segment.Key.X && q.Key.Y == segment.Key.Y).Value;
 
                 if (item != null)
                 {
@@ -99,12 +99,12 @@
 
         public SortedDictionary<Coordinate, Segment> GetSegments()
         {
-            return segmentations;
+            return this.segmentation;
         }
 
         public Segment GetSegment(int x, int y)
         {
-            return segmentations.FirstOrDefault(q => q.Key.X == x && q.Key.Y == y).Value;
+            return this.segmentation.FirstOrDefault(q => q.Key.X == x && q.Key.Y == y).Value;
         }
 
         #endregion

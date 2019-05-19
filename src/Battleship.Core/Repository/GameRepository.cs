@@ -1,12 +1,11 @@
-﻿using System.Threading;
-
-namespace Battleship.Core.Repository
+﻿namespace Battleship.Core.Repository
 {
     using System;
     using System.Collections.Generic;
+    using System.Text;
     using System.Threading.Tasks;
+    using Battleship.Core.Components;
     using Battleship.Core.Models;
-    using Components;
     using Microsoft.Data.Sqlite;
     using Newtonsoft.Json;
 
@@ -14,78 +13,58 @@ namespace Battleship.Core.Repository
     {
         private static volatile GameRepository instance;
 
-        private SqliteConnection databaseConnection = new SqliteConnection("Filename=../Data/Battleship.db");
-
-
-        public static GameRepository Instance()
-        {
-            if (instance == null)
-            {
-                lock (SyncObject)
-                {
-                    if (instance == null)
-                    {
-                        instance = new GameRepository();
-                        instance.Initialise();
-                    }
-                }
-            }
-
-            return instance;
-        }
+        private readonly SqliteConnection databaseConnection = new SqliteConnection("Filename=../Data/Battleship.db");
 
 
         public async Task<string> CreatePlayer(string name, string surname, string serialisedShips)
         {
             string authorisation = string.Empty;
 
-            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(surname) ||  string.IsNullOrEmpty(serialisedShips))
-            {
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(surname) || string.IsNullOrEmpty(serialisedShips))
                 throw new ArgumentException(authorisation);
-            }
 
-            using (databaseConnection)  
+            using (this.databaseConnection)
             {
-                try {
-
-                    databaseConnection.Open();
+                try
+                {
+                    this.databaseConnection.Open();
 
                     // create a 'session' token
                     string session = Guid.NewGuid().ToString();
-                    var sessionBytes = System.Text.Encoding.UTF8.GetBytes(session);
+                    byte[] sessionBytes = Encoding.UTF8.GetBytes(session);
                     string sessionToken = Convert.ToBase64String(sessionBytes);
 
                     string sessionExpiry = DateTime.Now.AddHours(2).ToString();
 
                     SqliteCommand playerCommand = new SqliteCommand();
-                    playerCommand.Connection = databaseConnection;
+                    playerCommand.Connection = this.databaseConnection;
 
                     // Use parameterized query to prevent SQL injection attacks
-                    playerCommand.CommandText = "INSERT INTO Player(Firstname, Lastname, SessionToken, SessionExpiry,ShipCoordinates ) " +
-                                                "VALUES (@Firstname, @Lastname, @SessionToken, @SessionExpiry, @ShipCoordinates);";
+                    playerCommand.CommandText =
+                        "INSERT INTO Player(Firstname, Lastname, SessionToken, SessionExpiry,ShipCoordinates ) " +
+                        "VALUES (@Firstname, @Lastname, @SessionToken, @SessionExpiry, @ShipCoordinates);";
                     playerCommand.Parameters.AddWithValue("@Firstname", name);
                     playerCommand.Parameters.AddWithValue("@Lastname", surname);
                     playerCommand.Parameters.AddWithValue("@SessionToken", sessionToken);
                     playerCommand.Parameters.AddWithValue("@SessionExpiry", sessionExpiry);
                     playerCommand.Parameters.AddWithValue("@ShipCoordinates", serialisedShips);
                     await playerCommand.ExecuteReaderAsync();
-                  
+
                     // insert the stats
                     SqliteCommand statisticsCommand = new SqliteCommand();
-                    statisticsCommand.Connection = databaseConnection;
+                    statisticsCommand.Connection = this.databaseConnection;
                     string statistics = JsonConvert.SerializeObject(new PlayerStats());
                     statisticsCommand.CommandText = "INSERT INTO PlayerStatistics(SessionToken, Statistics) " +
-                                                "VALUES (@SessionToken, @Statistics);";
+                                                    "VALUES (@SessionToken, @Statistics);";
                     statisticsCommand.Parameters.AddWithValue("@SessionToken", sessionToken);
                     statisticsCommand.Parameters.AddWithValue("@Statistics", statistics);
                     await statisticsCommand.ExecuteReaderAsync();
 
 
-                    databaseConnection.Close();
+                    this.databaseConnection.Close();
                     authorisation = sessionToken;
-
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     authorisation = string.Empty;
                 }
@@ -97,25 +76,19 @@ namespace Battleship.Core.Repository
         public async Task<string> GetPayerStatistics(string session)
         {
             string coordinates = string.Empty;
-            if (string.IsNullOrEmpty(session))
-            {
-                throw new ArgumentException();
-            }
+            if (string.IsNullOrEmpty(session)) throw new ArgumentException();
             try
             {
-                using (databaseConnection)
+                using (this.databaseConnection)
                 {
-                    databaseConnection.Open();
+                    this.databaseConnection.Open();
 
                     string sql = $"select Statistics from PlayerStatistics where SessionToken = '{session}'";
-                    SqliteCommand selectCommand = new SqliteCommand(sql, databaseConnection);
+                    SqliteCommand selectCommand = new SqliteCommand(sql, this.databaseConnection);
                     SqliteDataReader reader = await selectCommand.ExecuteReaderAsync();
-                    if (reader.HasRows)
-                    {
-                        coordinates = reader.GetString(0);
-                    }
+                    if (reader.HasRows) coordinates = reader.GetString(0);
                     reader.Close();
-                    databaseConnection.Close();
+                    this.databaseConnection.Close();
                 }
             }
             catch (Exception)
@@ -128,47 +101,35 @@ namespace Battleship.Core.Repository
 
         public async Task UpdatePlayerShipCoordinates(string serialisedShips, string sessionToken)
         {
-            try
+            using (this.databaseConnection)
             {
-                using (databaseConnection)
-                {
-                    databaseConnection.Open();
+                this.databaseConnection.Open();
 
-                    string sql = $"UPDATE Player SET ShipCoordinates = '{serialisedShips}' where SessionToken = '{sessionToken}'";
-                    SqliteCommand updateCommand = new SqliteCommand(sql, databaseConnection);
-                    await updateCommand.ExecuteReaderAsync();
+                string sql =
+                    $"UPDATE Player SET ShipCoordinates = '{serialisedShips}' where SessionToken = '{sessionToken}'";
+                SqliteCommand updateCommand = new SqliteCommand(sql, this.databaseConnection);
+                await updateCommand.ExecuteReaderAsync();
 
-                    databaseConnection.Close();
-                }
-            }
-            catch (Exception)
-            {
-                throw;
+                this.databaseConnection.Close();
             }
         }
 
         public async Task UpdatePlayerStatistics(string session, string statistics)
         {
-            try
+            using (this.databaseConnection)
             {
-                using (databaseConnection)
-                {
-                    databaseConnection.Open();
+                this.databaseConnection.Open();
 
-                    string sql = $"UPDATE PlayerStatistics SET Statistics = '{statistics}' where SessionToken = '{session}'";
-                    SqliteCommand updateCommand = new SqliteCommand(sql, databaseConnection);
-                    await updateCommand.ExecuteReaderAsync();
-                   
-                    databaseConnection.Close();
-                }
-            }
-            catch (Exception)
-            {
-                throw;
+                string sql =
+                    $"UPDATE PlayerStatistics SET Statistics = '{statistics}' where SessionToken = '{session}'";
+                SqliteCommand updateCommand = new SqliteCommand(sql, this.databaseConnection);
+                await updateCommand.ExecuteReaderAsync();
+
+                this.databaseConnection.Close();
             }
         }
 
-        public SortedDictionary<Player,PlayerStats> GetPlayersDetails()
+        public SortedDictionary<Player, PlayerStats> GetPlayersDetails()
         {
             throw new NullReferenceException();
         }
@@ -176,32 +137,27 @@ namespace Battleship.Core.Repository
         public bool IsPlayerValid(string sessionToken)
         {
             bool result = false;
-            if (string.IsNullOrEmpty(sessionToken))
-            {
-                throw new ArgumentException();
-            }
+            if (string.IsNullOrEmpty(sessionToken)) throw new ArgumentException();
 
             try
             {
-                using (databaseConnection)
+                using (this.databaseConnection)
                 {
-                    databaseConnection.Open();
+                    this.databaseConnection.Open();
 
                     string sql = $"SELECT * FROM Player where SessionToken = '{sessionToken}'";
-                    SqliteCommand selectCommand = new SqliteCommand(sql, databaseConnection);
+                    SqliteCommand selectCommand = new SqliteCommand(sql, this.databaseConnection);
                     SqliteDataReader query = selectCommand.ExecuteReader();
-                    if (query.HasRows)
-                    {
-                        result = true;
-                    }
+                    if (query.HasRows) result = true;
                 }
-                databaseConnection.Close();
+
+                this.databaseConnection.Close();
             }
             catch (Exception)
             {
                 result = false;
             }
-            
+
 
             return result;
         }
@@ -209,25 +165,19 @@ namespace Battleship.Core.Repository
         public async Task<string> GetPayerShipCoordinates(string sessionToken)
         {
             string coordinates = string.Empty;
-            if (string.IsNullOrEmpty(sessionToken))
-            {
-                throw new ArgumentException();
-            }
+            if (string.IsNullOrEmpty(sessionToken)) throw new ArgumentException();
             try
             {
-                using (databaseConnection)
+                using (this.databaseConnection)
                 {
-                    databaseConnection.Open();
+                    this.databaseConnection.Open();
 
                     string sql = $"SELECT ShipCoordinates FROM Player where SessionToken = '{sessionToken}'";
-                    SqliteCommand selectCommand = new SqliteCommand(sql, databaseConnection);
+                    SqliteCommand selectCommand = new SqliteCommand(sql, this.databaseConnection);
                     SqliteDataReader query = await selectCommand.ExecuteReaderAsync();
-                    if(query.HasRows)
-                    {
-                        coordinates = query.GetString(0);
-                    }
+                    if (query.HasRows) coordinates = query.GetString(0);
 
-                    databaseConnection.Close();
+                    this.databaseConnection.Close();
                 }
             }
             catch (Exception)
@@ -238,11 +188,27 @@ namespace Battleship.Core.Repository
             return coordinates;
         }
 
+
+        public static GameRepository Instance()
+        {
+            if (instance == null)
+                lock (SyncObject)
+                {
+                    if (instance == null)
+                    {
+                        instance = new GameRepository();
+                        instance.Initialise();
+                    }
+                }
+
+            return instance;
+        }
+
         private void Initialise()
         {
-            using (databaseConnection)
+            using (this.databaseConnection)
             {
-                databaseConnection.Open();
+                this.databaseConnection.Open();
 
                 //should really be read in, but going to keep it simple for the moment
                 string createdDatabase = @"BEGIN TRANSACTION;
@@ -259,11 +225,11 @@ namespace Battleship.Core.Repository
                                         );
                                         COMMIT TRANSACTION;";
 
-                SqliteCommand createTable = new SqliteCommand(createdDatabase, databaseConnection);
+                SqliteCommand createTable = new SqliteCommand(createdDatabase, this.databaseConnection);
 
                 createTable.ExecuteReader();
 
-                databaseConnection.Close();
+                this.databaseConnection.Close();
             }
         }
     }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Battleship.Core.Models
+﻿namespace Battleship.Core.Models
 {
     using Battleship.Core.Components.Ships;
     using Battleship.Core.Enums;
@@ -9,7 +7,7 @@ namespace Battleship.Core.Models
     /// <summary>
     ///     Individual segment (cell) in the segmentation list on the grid
     /// </summary>
-    public class Segment 
+    public class Segment
     {
         public Segment(char character)
         {

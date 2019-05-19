@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Battleship.Core.Models;
-
-namespace Battleship.Core.Repository
+﻿namespace Battleship.Core.Repository
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Battleship.Core.Models;
+
     internal interface IGameRepository
     {
         Task<string> CreatePlayer(string name, string surname, string serialisedShips);

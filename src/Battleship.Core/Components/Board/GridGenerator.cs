@@ -1,24 +1,21 @@
-﻿using Battleship.Core.Repository;
-
-namespace Battleship.Core.Components.Board
+﻿namespace Battleship.Core.Components.Board
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
     using Battleship.Core.Components.Ships;
     using Battleship.Core.Models;
+    using Battleship.Core.Repository;
 
     public class GridGenerator : ComponentBase, IGridGenerator
     {
+        private static volatile GridGenerator instance;
 
         private readonly ISegmentation segmentation;
 
         private readonly IShipRandomiser shipRandomiser;
 
         private readonly List<IShip> ships;
-
-        private static volatile GridGenerator instance;
 
         private int boardLeft;
 
@@ -37,19 +34,17 @@ namespace Battleship.Core.Components.Board
 
         #region Properties
 
-        public int? NumberOfSegments { get;  set; }
+        public int? NumberOfSegments { get; set; }
 
-        public int? NumberOfOccupiedSegments { get;  set; }
+        public int? NumberOfOccupiedSegments { get; set; }
 
         #endregion
 
         #region Methods
 
-
         public static GridGenerator Instance()
         {
             if (instance == null)
-            {
                 lock (SyncObject)
                 {
                     if (instance == null)
@@ -60,7 +55,6 @@ namespace Battleship.Core.Components.Board
                         instance = new GridGenerator(segmentation, shipRandomiser, ships);
                     }
                 }
-            }
 
             return instance;
         }
@@ -68,13 +62,12 @@ namespace Battleship.Core.Components.Board
 
         public int[] GetNumericRows()
         {
-
             GameRepository gameRepository = GameRepository.Instance();
 
 
-            int[] row = new int[GridDimension];
+            int[] row = new int[this.GridDimension];
             int counter = 0;
-            for (int i = 1; i <= GridDimension; i++)
+            for (int i = 1; i <= this.GridDimension; i++)
             {
                 row[counter] = i;
                 counter++;
@@ -85,12 +78,12 @@ namespace Battleship.Core.Components.Board
 
         public string[] GetAlphaColumnChars()
         {
-            int xDimention = XInitialPoint + GridDimension;
-            string[] column = new string[GridDimension];
+            int xDimention = this.XInitialPoint + this.GridDimension;
+            string[] column = new string[this.GridDimension];
             int counter = 0;
-            for (int i = XInitialPoint; i < xDimention; i++)
+            for (int i = this.XInitialPoint; i < xDimention; i++)
             {
-                column[counter] = ((char)i).ToString();
+                column[counter] = ((char) i).ToString();
                 counter++;
             }
 
@@ -101,26 +94,26 @@ namespace Battleship.Core.Components.Board
         private void CreateSegmentationGrid()
         {
             Console.ForegroundColor = ConsoleColor.Blue;
-            boardLeft = 4;
-            Console.SetCursorPosition(boardLeft, boardTop);
+            this.boardLeft = 4;
+            Console.SetCursorPosition(this.boardLeft, this.boardTop);
 
             int yCounter = 1;
-            while (yCounter <= GridDimension)
+            while (yCounter <= this.GridDimension)
             {
-                for (int xCounter = 0; xCounter <= GridDimension - Index; xCounter++)
+                for (int xCounter = 0; xCounter <= this.GridDimension - this.Index; xCounter++)
                 {
                     Segment segment = new Segment(Water);
-                    Coordinate coordinates = new Coordinate(XInitialPoint + xCounter, yCounter);
-                    segmentation.AddSegment(coordinates, segment);
+                    Coordinate coordinates = new Coordinate(this.XInitialPoint + xCounter, yCounter);
+                    this.segmentation.AddSegment(coordinates, segment);
                 }
 
-                boardTop++;
+                this.boardTop++;
                 yCounter++;
 
-                Console.SetCursorPosition(boardLeft, boardTop);
+                Console.SetCursorPosition(this.boardLeft, this.boardTop);
             }
 
-            this.NumberOfSegments = segmentation.GetSegments().Count();
+            this.NumberOfSegments = this.segmentation.GetSegments().Count();
 
             // update the board with randomly generated ship coordinates
             this.UpdateSegmentationGridWithShips();
@@ -128,14 +121,13 @@ namespace Battleship.Core.Components.Board
 
         private void UpdateSegmentationGridWithShips()
         {
-            SortedDictionary<Coordinate, Segment> segments = shipRandomiser.GetRandomisedShipCoordinates(ships);
+            SortedDictionary<Coordinate, Segment> segments =
+                this.shipRandomiser.GetRandomisedShipCoordinates(this.ships);
 
-            segmentation.UpdateSegmentRange(segments);
+            this.segmentation.UpdateSegmentRange(segments);
 
-            this.NumberOfOccupiedSegments = segmentation.GetSegments().Count(q => !q.Value.IsEmpty);
+            this.NumberOfOccupiedSegments = this.segmentation.GetSegments().Count(q => !q.Value.IsEmpty);
         }
-
-  
 
         #endregion
     }
