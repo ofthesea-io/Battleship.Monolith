@@ -26,12 +26,6 @@ steps:
     command: install
     workingDir: src/Battleship
 
-- task: rsjx
-  displayName: 'npm install'
-  inputs:
-    command: install
-    workingDir: src/Battleship
-
 #Restore
 - task: DotNetCoreCLI@2
   inputs:
