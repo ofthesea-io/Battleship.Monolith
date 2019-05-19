@@ -17,4 +17,6 @@ import { PlayerFormComponent } from "./player-form/player-form.component";
   providers: [Configuration, BattleshipService],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+  
+}
