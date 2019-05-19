@@ -26,7 +26,7 @@ steps:
     command: install
     workingDir: src/Battleship
 
-- task: rxjs
+- task: rsjx@^6.5.3
   displayName: 'npm install'
   inputs:
     command: install
