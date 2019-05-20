@@ -3,7 +3,6 @@ import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import { HttpClientModule } from "@angular/common/http";
-
 import { AppComponent } from "./app.component";
 import { GamingGridComponent } from "./gaming-grid/gaming-grid.component";
 import { ScoreCardComponent } from "./score-card/score-card.component";
