@@ -26,12 +26,13 @@ steps:
     command: install
     workingDir: src/Battleship
 
-#Restore
+#Test
 - task: DotNetCoreCLI@2
   inputs:
-    command: 'restore'
-    projects: '**/*.csproj'
-  displayName: Restore
+    command: test
+    projects: '**/*Tests.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+  displayName: Tests
   
 #Build
 - task: DotNetCoreCLI@2
@@ -40,14 +41,7 @@ steps:
     projects: '**/*.csproj'
   displayName: 'Build $(buildConfiguration)'
 
-#Test
-- task: DotNetCoreCLI@2
-  inputs:
-    command: test
-    projects: '**/*Tests.csproj'
-    arguments: '--configuration $(buildConfiguration)'
-  displayName: Tests
-
+#publish
 - task: DotNetCoreCLI@2
   displayName: 'dotnet publish $(buildConfiguration)'
   inputs:
