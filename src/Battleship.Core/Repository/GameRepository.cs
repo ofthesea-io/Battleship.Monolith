@@ -13,7 +13,7 @@
     {
         private static volatile GameRepository instance;
 
-        private readonly SqliteConnection databaseConnection = new SqliteConnection("Filename=../Data/Battleship.db");
+        private readonly SqliteConnection databaseConnection = new SqliteConnection("Filename=Battleship.db");
 
 
         public async Task<string> CreatePlayer(string name, string surname, string serialisedShips)

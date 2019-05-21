@@ -110,8 +110,7 @@
 
         private bool CheckPlayerStatus(string token)
         {
-            //return gamePlayer.IsPlayerValid(this.HttpContext.Request.Headers["Authorization"]);
-            return true;
+            return this.gamePlayer.IsPlayerValid(this.HttpContext.Request.Headers["Authorization"]);
         }
     }
 }
