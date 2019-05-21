@@ -6,7 +6,7 @@
     using Battleship.Core.Components.Ships;
     using Battleship.Core.Models;
 
-    public static class BattleshipExtensions 
+    public static class BattleshipExtensions
     {
         private static readonly int Index = 1;
 
@@ -20,33 +20,26 @@
 
             if (source.Any())
             {
-                SortedDictionary<Coordinate, Segment> segments = (SortedDictionary<Coordinate, Segment>)source;
+                SortedDictionary<Coordinate, Segment> segments = (SortedDictionary<Coordinate, Segment>) source;
                 bool isTaken = segments.Any(q => q.Key.X == x && q.Key.Y == y && !q.Value.IsEmpty);
-                if (isTaken)
-                {
-                    result = false;
-                }
+                if (isTaken) result = false;
             }
 
             return result;
         }
 
-        public static bool AddRange<TSource>(this IEnumerable<TSource> source, SortedDictionary<Coordinate, Segment> range)
+        public static bool AddRange<TSource>(this IEnumerable<TSource> source,
+            SortedDictionary<Coordinate, Segment> range)
         {
             bool result = true;
 
             if (range.Any())
             {
-                SortedDictionary<Coordinate, Segment> segments = (SortedDictionary<Coordinate, Segment>)source;
+                SortedDictionary<Coordinate, Segment> segments = (SortedDictionary<Coordinate, Segment>) source;
 
                 if (segments != null)
-                {
                     foreach (KeyValuePair<Coordinate, Segment> pair in range)
-                    {
                         segments.Add(pair.Key, pair.Value);
-                    }
-                }
-              
             }
 
             return result;
@@ -61,10 +54,7 @@
             int maxXLength = XInitialPoint + GridDimension - Index;
 
             // Test the X and Y Axis coordinates
-            if (x >= XInitialPoint && x <= maxXLength && y >= Index && y <= GridDimension)
-            {
-                result = true;
-            }
+            if (x >= XInitialPoint && x <= maxXLength && y >= Index && y <= GridDimension) result = true;
 
             return result;
         }
@@ -74,24 +64,19 @@
             List<IShip> ships = new List<IShip>(numberOfShips);
 
             for (int i = 1; i <= numberOfShips; i++)
-            {
                 if (i % 2 == 0)
                     ships.Add(new Destroyer(i));
                 else
                     ships.Add(new BattleShip(i));
-            }
 
             return ships;
         }
 
         public static string AuthorisationToken(string bearer)
         {
-            if(string.IsNullOrEmpty(bearer))
-            {
-                throw new NullReferenceException();
-            }
+            if (string.IsNullOrEmpty(bearer)) throw new NullReferenceException();
 
             return bearer.Split(' ')[1];
-        } 
+        }
     }
 }

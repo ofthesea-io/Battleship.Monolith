@@ -78,10 +78,10 @@
 
         public string[] GetAlphaColumnChars()
         {
-            int xDimention = this.XInitialPoint + this.GridDimension;
+            int xDimension = this.XInitialPoint + this.GridDimension;
             string[] column = new string[this.GridDimension];
             int counter = 0;
-            for (int i = this.XInitialPoint; i < xDimention; i++)
+            for (int i = this.XInitialPoint; i < xDimension; i++)
             {
                 column[counter] = ((char) i).ToString();
                 counter++;

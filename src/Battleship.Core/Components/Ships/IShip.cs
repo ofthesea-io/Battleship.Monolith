@@ -12,6 +12,6 @@
         int CoordinateStatus { get; set; }
 
         // Ship Index
-        int ShipIndex { get;  }
+        int ShipIndex { get; }
     }
 }

@@ -43,7 +43,6 @@
                 throw new IndexOutOfRangeException();
             }
 
-
             this.segmentation.Add(coordinate, new Segment(segment.Character));
         }
 

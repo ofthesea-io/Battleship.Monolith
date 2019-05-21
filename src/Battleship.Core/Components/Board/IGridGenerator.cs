@@ -8,6 +8,7 @@
         int? NumberOfSegments { get; set; }
 
         int? NumberOfOccupiedSegments { get; set; }
+
         int[] GetNumericRows();
 
         string[] GetAlphaColumnChars();

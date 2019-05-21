@@ -1,11 +1,10 @@
 ﻿namespace Battleship.Core.Components.Ships
 {
     using System.Collections.Generic;
-
-    using Models;
+    using Battleship.Core.Models;
 
     /// <summary>
-    ///  The ShipRandomiser randomises ships on the Grid
+    ///     The ShipRandomiser randomises ships on the Grid
     /// </summary>
     public interface IShipRandomiser
     {

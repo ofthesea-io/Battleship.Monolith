@@ -8,8 +8,8 @@
 
         public BattleShip(int shipIndex)
         {
-            this.ShipLength = shipLength;
-            this.ShipChar = shipType;
+            this.ShipLength = this.shipLength;
+            this.ShipChar = this.shipType;
             this.ShipIndex = shipIndex;
         }
 

@@ -1,30 +1,29 @@
 ﻿namespace Battleship.Core.Components.Board
 {
     using System.Collections.Generic;
-
     using Battleship.Core.Models;
 
     /// <summary>
-    /// List of segments Controls each individual segment on the grid.
+    ///     List of segments Controls each individual segment on the grid.
     /// </summary>
     public interface ISegmentation
     {
         /// <summary>
-        /// Add a segment to the segmentation grid
+        ///     Add a segment to the segmentation grid
         /// </summary>
         /// <param name="coordinate">Coordinate of the grid</param>
         /// <param name="segment">Segment of the grid</param>
         void AddSegment(Coordinate coordinate, Segment segment);
 
         /// <summary>
-        /// Update a segment in the segmentation grid
+        ///     Update a segment in the segmentation grid
         /// </summary>
         /// <param name="coordinate">Coordinate of the grid</param>
         /// <param name="segment">A segment within the grid</param>
         void UpdateSegment(Coordinate coordinate, Segment segment);
 
         /// <summary>
-        /// Update a range of segments in the segmentation grid
+        ///     Update a range of segments in the segmentation grid
         /// </summary>
         /// <param name="segment">A list of segment within the grid</param>
         void UpdateSegmentRange(SortedDictionary<Coordinate, Segment> segment);
