@@ -6,6 +6,7 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <UserSecretsId>687d91a2-e6b3-48e5-b047-d0ffb69cae10</UserSecretsId>
     <StartupObject>Battleship.Web.Api.Program</StartupObject>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

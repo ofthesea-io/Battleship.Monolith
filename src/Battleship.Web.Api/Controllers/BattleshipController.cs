@@ -9,9 +9,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
 
-    /// <summary>
-    ///     The game board generation
-    /// </summary>
+ 
     [Route("api/[controller]")]
     [ApiController]
     public class BattleshipController : ControllerBase, IBattleshipController
@@ -31,7 +29,7 @@
         {
             try
             {
-                if (!this.CheckPlayerStatus(this.HttpContext.Request.Headers["Authorization"]))
+                if (!this.CheckPlayerStatus())
                     return this.BadRequest("Authentication failed");
 
                 GamingGrid gamingGrid = new GamingGrid
@@ -108,7 +106,7 @@
             }
         }
 
-        private bool CheckPlayerStatus(string token)
+        private bool CheckPlayerStatus()
         {
             return this.gamePlayer.IsPlayerValid(this.HttpContext.Request.Headers["Authorization"]);
         }
